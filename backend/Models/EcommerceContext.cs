@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using backend.Models;
 
 namespace backend.Models
 {
@@ -12,5 +13,6 @@ namespace backend.Models
         {}
 
         public DbSet <Product> Products { get; set; }
+        public DbSet<backend.Models.Category> Category { get; set; } = default!;
     }
 }

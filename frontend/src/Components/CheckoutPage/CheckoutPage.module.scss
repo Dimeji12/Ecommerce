@@ -1,0 +1,180 @@
+@import "src/Styles/mixins";
+// @import "~@fortawesome/fontawesome-free/css/all.min.css";
+
+.checkoutPage {
+  margin: 60px 0 160px;
+}
+
+.checkoutPage>form {
+  margin-top: 60px;
+}
+
+.checkoutPageContent {
+  display: flex;
+  justify-content: space-between;
+  gap: 80px;
+}
+
+@include medium {
+  .checkoutPageContent {
+    gap: 40px;
+  }
+}
+
+@include small {
+  .checkoutPageContent {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+  }
+}
+
+
+
+/* FEEDBACK */
+.rating {
+  display: grid;
+  height: 100vh;
+  place-items: center;
+  text-align: center;
+  background: #fff;
+}
+.containerRating {
+  position: relative;
+  width: 400px;
+  background: #111;
+  padding: 20px 30px;
+  border: 1px solid #444;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+.containerRating .post {
+  display: none;
+}
+.containerRating .text {
+  font-size: 25px;
+  color: #666;
+  font-weight: 500;
+}
+.containerRating .edit {
+  position: absolute;
+  right: 10px;
+  top: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  color: #666;
+  font-weight: 500;
+}
+.containerRating .edit:hover {
+  text-decoration: underline;
+}
+.containerRating .starWidget input {
+  display: none;
+}
+.starWidget label {
+  font-size: 40px;
+  color: #444;
+  padding: 10px;
+  float: right;
+  transition: all 0.2s ease;
+}
+.starWidget input:not(:checked) ~label:hover, 
+.starWidget input:not(:checked) ~label:hover ~ label {
+  color: #f44336;
+}
+input:checked ~ label {
+  color: #f44336;
+}
+input#rate-5:checked ~ label {
+  text-shadow: 0 0 20px #952;
+}
+input#rate-1:checked ~ form header::before {
+  content: "I just hate it 😠";
+}
+input#rate-2:checked ~ form header::before {
+  content: "I don't like it 😒";
+}
+input#rate-3:checked ~ form header::before {
+  content: "It is awesome 😄";
+}
+input#rate-4:checked ~ form header::before {
+  content: "I just like it 😎";
+}
+input#rate-5:checked ~ form header::before {
+  content: "I just love it 😍";
+}
+.containerRating form {
+  display: none;
+}
+input:checked ~ form {
+  display: block;
+}
+form header {
+  width: 100%;
+  font-size: 25px;
+  color: #f44336;
+  font-weight: 500;
+  margin: 5px 0 20px 0;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+form .textarea  {
+  height: 100px;
+  width: 100%;
+  overflow: hidden;
+}
+form .textarea textarea {
+  height: 100%;
+  width: 100%;
+  color: #eee;
+  outline: none;
+  border: 1px solid #333;
+  background: #222;
+  padding: 10px;
+  resize: none;
+  font-size: 17px;
+}
+form .btn {
+  height: 65px;
+  width: 100%;
+  margin: 15px 0;
+}
+form .btn button {
+  height: 100%;
+  width: 100%;
+  padding-left: 30px;
+  border: 1px solid #444;
+  outline: none;
+  background: #222;
+  color: #999;
+  font-size: 17px;
+  font-weight: 500;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+form .btn button:hover {
+  background: #f44336;
+}
+
+
+
+// Adjust visibility based on state
+.visible {
+  display: block !important;
+}
+
+.hidden {
+  display: none !important;
+}
+
+
+
+/* === END OF FEEDBACK STYLING ==== */
+
+
