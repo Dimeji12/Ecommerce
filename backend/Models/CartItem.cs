@@ -7,7 +7,7 @@ namespace backend.Models
 {
     public class CartItem
     {
-    public int CartItemId { get; set; }
-    public string? CartItemName { get; set; } 
+        public int CartItemId { get; set; }
+        public string? CartItemName { get; set; }
     }
 }
