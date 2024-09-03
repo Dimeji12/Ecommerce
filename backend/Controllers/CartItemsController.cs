@@ -24,14 +24,14 @@ namespace backend.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CartItem>>> GetCartItem()
         {
-            return await _context.CartItem.ToListAsync();
+            return await _context.CartItems.ToListAsync();
         }
 
         // GET: api/CartItems/5
         [HttpGet("{id}")]
         public async Task<ActionResult<CartItem>> GetCartItem(int id)
         {
-            var cartItem = await _context.CartItem.FindAsync(id);
+            var cartItem = await _context.CartItems.FindAsync(id);
 
             if (cartItem == null)
             {
@@ -77,7 +77,7 @@ namespace backend.Controllers
         [HttpPost]
         public async Task<ActionResult<CartItem>> PostCartItem(CartItem cartItem)
         {
-            _context.CartItem.Add(cartItem);
+            _context.CartItems.Add(cartItem);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetCartItem", new { id = cartItem.CartItemId }, cartItem);
@@ -87,13 +87,13 @@ namespace backend.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCartItem(int id)
         {
-            var cartItem = await _context.CartItem.FindAsync(id);
+            var cartItem = await _context.CartItems.FindAsync(id);
             if (cartItem == null)
             {
                 return NotFound();
             }
 
-            _context.CartItem.Remove(cartItem);
+            _context.CartItems.Remove(cartItem);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -101,7 +101,7 @@ namespace backend.Controllers
 
         private bool CartItemExists(int id)
         {
-            return _context.CartItem.Any(e => e.CartItemId == id);
+            return _context.CartItems.Any(e => e.CartItemId == id);
         }
     }
 }

@@ -1,12 +1,5 @@
-
-
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using backend.Models;
 using Microsoft.AspNetCore.Authorization;
 
@@ -63,7 +56,9 @@ namespace backend.Controllers
         [HttpPut]
         public async Task<IActionResult> UpdateRole([FromBody] UpdateRoleModel model)
         {
+#pragma warning disable CS8604 // Possible null reference argument.
             var role = await _roleManager.FindByIdAsync(model.RoleId);
+#pragma warning restore CS8604 // Possible null reference argument.
 
             if (role == null)
             {
@@ -104,14 +99,18 @@ namespace backend.Controllers
         [HttpPost("assign-role-to-user")]
         public async Task<IActionResult> AssignRoleToUser([FromBody] AssignRoleModel model)
         {
+#pragma warning disable CS8604 // Possible null reference argument.
             var user = await _userManager.FindByIdAsync(model.UserId);
+#pragma warning restore CS8604 // Possible null reference argument.
 
             if (user == null)
             {
                 return NotFound("User not found.");
             }
 
+#pragma warning disable CS8604 // Possible null reference argument.
             var roleExists = await _roleManager.RoleExistsAsync(model.RoleName);
+#pragma warning restore CS8604 // Possible null reference argument.
 
             if (!roleExists)
             {

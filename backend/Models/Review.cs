@@ -9,7 +9,5 @@ namespace backend.Models
     {
         public int ReviewId { get; set; }
 
-
-
     }
 }

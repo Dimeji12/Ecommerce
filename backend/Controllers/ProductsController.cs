@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using backend.Models;
+using Org.BouncyCastle.Asn1.Cmp;
 
 namespace backend.Controllers
 {
@@ -15,27 +16,15 @@ namespace backend.Controllers
     {
         private readonly EcommerceContext _context;
 
-         private readonly ILogger _logger;
-
-        public ProductsController(EcommerceContext context, ILogger <ProductsController> logger)
+        public ProductsController(EcommerceContext context)
         {
             _context = context;
-             _logger = logger;
-        }
-
-        // GET: api/Products
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
-        {
-              _logger.LogInformation("Getting all Products");
-            return await _context.Products.ToListAsync();
         }
 
         // GET: api/Products/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Product>> GetProduct(int id)
         {
-              _logger.LogInformation("Getting Product By Id");
             var product = await _context.Products.FindAsync(id);
 
             if (product == null)
@@ -51,8 +40,7 @@ namespace backend.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutProduct(int id, Product product)
         {
-              _logger.LogInformation("Updating Product by Id");
-            if (id != product.ProductId)
+            if (id != product.Id)
             {
                 return BadRequest();
             }
@@ -81,21 +69,48 @@ namespace backend.Controllers
         // POST: api/Products
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-       
         public async Task<ActionResult<Product>> PostProduct(Product product)
         {
-             _logger.LogInformation("Creating Product ");
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetProduct", new { id = product.ProductId }, product);
+            return CreatedAtAction("GetProduct", new { id = product.Id }, product);
         }
+
+        // POST: api/Products
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost("all")]
+        public async Task<ActionResult<IEnumerable<Product>>> PostProducts([FromBody] IEnumerable<Product> products)
+        {
+            if (products == null || !products.Any())
+            {
+                return BadRequest("No products to add.");
+            }
+
+            foreach (var product in products)
+            {
+                // You might want to validate each product before adding it
+                _context.Products.Add(product);
+            }
+
+            await _context.SaveChangesAsync();
+
+            // Assuming that you want to return the list of added products
+            return CreatedAtAction("GetProducts", new { }, products);
+        }
+
+        // GET: api/Products
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
+        {
+            return await _context.Products.ToListAsync();
+        }
+
 
         // DELETE: api/Products/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProduct(int id)
         {
-              _logger.LogInformation("Deleting Product by Id");
             var product = await _context.Products.FindAsync(id);
             if (product == null)
             {
@@ -108,9 +123,30 @@ namespace backend.Controllers
             return NoContent();
         }
 
+        // DELETE: api/Products
+        [HttpDelete("Delete")]
+        public async Task<IActionResult> DeleteAllProducts()
+        {
+            var relatedData = await _context.ProductColors.Where(o => o.Id != null).ToListAsync();
+            _context.ProductColors.RemoveRange(relatedData);
+            await _context.SaveChangesAsync();
+
+            // Then delete the products
+            var products = await _context.Products.ToListAsync();
+            if (products == null || !products.Any())
+            {
+                return NotFound(new { message = "No products found to delete." });
+            }
+
+            _context.Products.RemoveRange(products);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
         private bool ProductExists(int id)
         {
-            return _context.Products.Any(e => e.ProductId == id);
+            return _context.Products.Any(e => e.Id == id);
         }
     }
 }
