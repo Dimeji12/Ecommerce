@@ -1,0 +1,21 @@
+@import "src/Styles/mixins";
+
+.mainSlider {
+  width: 100%;
+  height: 500px;
+  user-select: none;
+  margin-bottom: 140px;
+}
+
+@include large {
+  .mainSlider {
+    width: 100%;
+    margin-bottom: 40px;
+  }
+}
+
+@include medium {
+  .mainSlider {
+    height: 300px;
+  }
+}

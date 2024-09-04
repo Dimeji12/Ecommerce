@@ -1,0 +1,42 @@
+.scrollTopButton {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #f44336;
+  font-size: 20px;
+  padding: 10px;
+  border: 4px solid var(--white);
+  border-radius: 50%;
+  z-index: 500;
+  padding: 15px;
+  border-width: 6px;
+  bottom: 30px;
+  right: 30px;
+  pointer-events: all;
+  transition: opacity .3s, background-color .25s, border-radius .25s .1s;
+
+  &.hide:not(:focus-visible) {
+    opacity: 0;
+    pointer-events: none;
+  }
+// f44336
+  &:focus-visible {
+    background-color: #f44336;
+    border-radius: 20%;
+  }
+
+  &:hover {
+    background-color: #f44336;
+  }
+}
+
+.scrollTopButton>svg {
+  width: 20px;
+  height: 20px;
+  fill: var(--white);
+}
+
+// Arabic styles
+[lang=ar] .scrollTopButton {
+  bottom: 100px;
+}
