@@ -166,11 +166,15 @@ export function setFormattedPrice(product)
 export function getSubTotal(cartProducts, key = "quantity")
 {
 
+
   const total = cartProducts?.reduce((acc, product) =>
   {
+
+    const thePrice = product.discount == null || product.discount > product.price ? product.price : (product.price - product.discount).toFixed(2);
+
     const priceAfterDiscount = +((product?.afterDiscount || "").replaceAll(",", ""));
     const quantity = +product?.[key];
-    const quantityPrice = quantity * product.price;
+    const quantityPrice = quantity * thePrice;
     return (acc += quantityPrice);
   }, 0);
 

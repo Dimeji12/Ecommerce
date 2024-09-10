@@ -10,13 +10,13 @@ namespace backend.Models
     public int CartId { get; set; }
 
    
-    public int CustomerId { get; set; }  // ID of the user to whom the cart belongs
+    public int CustomerId { get; set; }
 
-    public DateTime DateCreated { get; set; }  // Timestamp for when the cart was created
+    public DateTime DateCreated { get; set; }
 
-    public DateTime? LastUpdated { get; set; }  // Timestamp for when the cart was last updated
+    public DateTime? LastUpdated { get; set; }
 
-    public List<CartItem> CartItems { get; set; }  // Collection of CartItems in the Cart
+    public List<CartItem> CartItems { get; set; }
 
     public Cart()
     {

@@ -74,7 +74,6 @@ const ProductCard = ({
           const imageBlob = await response.blob();
           const imageObjectURL = URL.createObjectURL(imageBlob);
           setProductImage(imageObjectURL);
-          console.log("Image fetch successful for product ID:", id);
         } catch (error) {
           console.error('Error fetching image:', error.message);
         }

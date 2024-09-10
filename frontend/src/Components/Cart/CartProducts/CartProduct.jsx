@@ -9,11 +9,13 @@ import { apiUrl } from "../../../Data/BaseApi.js";
 
 const CartProduct = ({ data }) =>
 {
-  const { img, name, shortName, afterDiscount, quantity, id, price } = data || {};
+  const { img, name, shortName, afterDiscount, quantity, id, price, discount } = data || {};
+
+  const thePrice = discount == null || discount > price ? price : (price - discount).toFixed(2);
 
   // Safeguard for `afterDiscount` and handle any undefined or null values
   const priceAfterDiscount = parseFloat((afterDiscount || "0").replaceAll(",", ""));
-  const subTotal = (quantity * price).toFixed(2);
+  const subTotal = (quantity * thePrice).toFixed(2);
   const [productImage, setProductImage] = useState();
 
   const { t } = useTranslation();
@@ -70,7 +72,7 @@ const CartProduct = ({ data }) =>
         <Link to={`/details?product=${name}`}>{translatedProductName}</Link>
       </td>
 
-      <td className={s.price}>£{price}</td>
+      <td className={s.price}>£{thePrice}</td>
 
       <td>
         <CustomNumberInput product={data} quantity={quantity} />

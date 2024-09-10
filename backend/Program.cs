@@ -119,7 +119,7 @@ using (var serviceScope = app.Services.CreateScope())
 {
     var dbService = serviceScope.ServiceProvider.GetRequiredService<DbInit>();
 
-    //  await dbService.UploadProducts();
+    // await dbService.UploadProducts();
 }
 
 

@@ -14,6 +14,7 @@ import FadeInOutLoading from '../Shared/Loaders/spinnerLoading';
 import { setEmptyArrays } from 'src/Features/productsSlice';
 import { useNavigate } from 'react-router-dom';
 import { addToArray } from '../../Features/productsSlice';
+import {apiUrl} from "../../Data/BaseApi.js";
 
 const CheckoutPage = () =>
 {
@@ -28,7 +29,7 @@ const CheckoutPage = () =>
   const { values: billingValues, handleChange } = useFormData({
     initialValues: {
       firstName: '',
-      companyName: '',
+      lastName: '',
       address: '',
       streetAddress: '',
       cityOrTown: '',
@@ -48,34 +49,79 @@ const CheckoutPage = () =>
     },
   ];
 
+  const checkoutRequest = async (cartProducts, billingValues) => {
+    try {
+      const checkoutRequestBody = {
+        products: cartProducts,
+        customer: billingValues
+      };
+
+      console.log('Checkout Successful:', checkoutRequestBody);
+
+      // Make the checkout API call
+      const response = await fetch(`${apiUrl}Orders/checkout`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(checkoutRequestBody),
+      });
+
+      if (!response.ok) {
+        throw new Error('Checkout request failed');
+      }
+
+      const data = await response.json();
+      console.log('Checkout Successful:', data);
+
+      localStorage.setItem('trackingNumber', data.trackingNumber);
+
+      return data;
+    } catch (error) {
+      console.error('Error during checkout:', error);
+      throw error;
+    }
+  };
+
   function handleSubmitPayment(e)
   {
     e.preventDefault();
     if (loading) return;
     setLoading(true)
-    // Remove billing info if saveBillingInfoToLocal is false
+
     if (!saveBillingInfoToLocal)
     {
       localStorage.removeItem('billingInfo');
     }
 
-    setTimeout(() =>
-    {
-      // Show completion alert
-      orderCompletionAlert(dispatch, t);
-      setLoading(false);
+    setTimeout(async () => {
+      try {
+        setLoading(true);
 
-      // Save cartProducts to local storage
-      localStorage.setItem('trackingOrder', JSON.stringify(cartProducts));
+        const checkoutResponse = await checkoutRequest(cartProducts, billingValues);
 
-      // Clear cartProducts in Redux store
-      const arraysToEmpty = ['cartProducts'];
-      const emptyArraysAction = setEmptyArrays({ keys: arraysToEmpty });
-      dispatch(emptyArraysAction);
+        const trackingNumber = checkoutResponse.trackingNumber;
 
-      // Navigate to feedback page
-      navigateTo('/feedback');
+        alert("Successful!!! " + "\nOrder Tracking Number: " + trackingNumber);
+
+        setLoading(false);
+
+        localStorage.setItem('trackingOrder', JSON.stringify(cartProducts));
+        console.log("Checkout Response:", checkoutResponse);
+
+        const arraysToEmpty = ['cartProducts'];
+        const emptyArraysAction = setEmptyArrays({ keys: arraysToEmpty });
+        dispatch(emptyArraysAction);
+
+        navigateTo('/feedback');
+      } catch (error) {
+        console.error('Error during checkout process:', error);
+        setLoading(false);
+      }
     }, 3000);
+
+
   }
 
 

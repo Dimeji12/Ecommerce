@@ -22,7 +22,7 @@ namespace backend.Controllers
 
         // GET: api/Orders
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Order>>> GetOrder()
+        public async Task<ActionResult<IEnumerable<Order>>> GetOrders()
         {
             return await _context.Orders.ToListAsync();
         }
@@ -97,6 +97,79 @@ namespace backend.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
+        }
+
+        [HttpPost("checkout")]
+        public async Task<IActionResult> Checkout([FromBody] CheckoutRequestBody checkoutRequest)
+        {
+            if (checkoutRequest == null || !checkoutRequest.Products.Any() || checkoutRequest.Customer == null)
+            {
+                return BadRequest("Invalid checkout request.");
+            }
+
+            var order = new Order
+            {
+                TotalQuantity = checkoutRequest.Products.Sum(p => p.Quantity),
+                TotalPrice = checkoutRequest.Products.Sum(p => p.Discount > p.Price 
+                    ? p.Price * p.Quantity 
+                    : (p.Price - p.Discount) * p.Quantity),
+                DateCreated = DateTime.Now,
+                LastUpdated = DateTime.Now,
+                OrderTrackingNumber = GenerateOrderTrackingNumber(),
+            };
+
+            var customer = await _context.Customers.FirstOrDefaultAsync(c => c.Email == checkoutRequest.Customer.Email);
+
+            if (customer == null)
+            {
+                customer = new Customer
+                {
+                    FirstName = checkoutRequest.Customer.FirstName,
+                    LastName = checkoutRequest.Customer.LastName,
+                    Email = checkoutRequest.Customer.Email,
+                    PhoneNumber = checkoutRequest.Customer.PhoneNumber,
+                    Address = new Address
+                    {
+                        StreetAddress = checkoutRequest.Customer.StreetAddress,
+                        City = checkoutRequest.Customer.City,
+                        PhoneNumber = checkoutRequest.Customer.PhoneNumber,
+                        Email = checkoutRequest.Customer.Email,
+                    }
+                };
+
+                _context.Customers.Add(customer);
+                await _context.SaveChangesAsync();
+            }
+
+            // Set customer in the order
+            order.CustomerId = customer.CustomerId;
+
+            foreach (var productInfo in checkoutRequest.Products)
+            {
+                var orderItem = new OrderItem
+                {
+                    ProductId = productInfo.Id,
+                    Quantity = productInfo.Quantity,
+                    UnitPrice = productInfo.Price,
+                    TotalPrice = productInfo.Discount > productInfo.Price
+                        ? productInfo.Price * productInfo.Quantity
+                        : (productInfo.Price - productInfo.Discount) * productInfo.Quantity,
+                    Discount = productInfo.Discount,
+                    DateCreated = DateTime.Now
+                };
+
+                order.OrderItems.Add(orderItem);
+            }
+
+            _context.Orders.Add(order);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { orderId = order.OrderId, trackingNumber = order.OrderTrackingNumber });
+        }
+
+        private string GenerateOrderTrackingNumber()
+        {
+            return Guid.NewGuid().ToString().Replace("-", "").Substring(0, 10).ToUpper();
         }
 
         private bool OrderExists(int id)

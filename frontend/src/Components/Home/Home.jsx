@@ -1,4 +1,3 @@
-
 import { Helmet } from 'react-helmet-async';
 import useScrollOnMount from 'src/Hooks/App/useScrollOnMount';
 import CategoriesSection from './CategoriesSection/CategoriesSection';

@@ -5,6 +5,7 @@ import ProductsSlider from "../../Shared/MidComponents/ProductsSlider/ProductsSl
 import SectionTitle from "../../Shared/MiniComponents/SectionTitle/SectionTitle";
 import s from "./ThisMonthSection.module.scss";
 import { useState, useEffect } from 'react';
+import { apiUrl } from "../../../Data/BaseApi";
 
 const ThisMonthSection = () =>
 {
@@ -16,7 +17,7 @@ const ThisMonthSection = () =>
     {
       try
       {
-        const response = await fetch('http://localhost:5243/api/Products', {
+        const response = await fetch(`${apiUrl}Products`, {
           method: 'GET',
           credentials: 'include',
           headers: {

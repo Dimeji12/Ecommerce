@@ -37,8 +37,10 @@ const PaymentProducts = ({ data }) =>
 
   return (
     <div className={s.products}>
-      {data.map(({ img, name, shortName, afterDiscount, id, quantity, price }) =>
+      {data.map(({ img, name, shortName, afterDiscount, id, quantity, price, discount }) =>
       {
+        const thePrice = discount == null || discount > price ? price : (price - discount).toFixed(2);
+
         const [productImage, setProductImage] = useState(null);
 
         useEffect(() =>
@@ -64,7 +66,7 @@ const PaymentProducts = ({ data }) =>
                 })}
               </span>
             </div>
-            <span className={s.price}>{price * quantity}</span>
+            <span className={s.price}>{thePrice * quantity}</span>
           </Link>
         );
       })}

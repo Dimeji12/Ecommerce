@@ -73,8 +73,7 @@ namespace backend.Models
                 .OnDelete(DeleteBehavior.Cascade);
 
 
-            // Assuming you want to treat ProductColor as a value object:
-            // modelBuilder.Entity<ProductColor>().HasNoKey();
+          
 
             base.OnModelCreating(modelBuilder);
         }

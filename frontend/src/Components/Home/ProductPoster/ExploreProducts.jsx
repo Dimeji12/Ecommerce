@@ -29,7 +29,6 @@ const ExploreProducts = ({ numOfProducts = -1, customization }) =>
         }
 
         const data = await response.json();
-        console.log("Fetched Products:", data);
         setProducts(data);
       } catch (error)
       {

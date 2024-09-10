@@ -367,9 +367,9 @@ export const billingInputsData = [
     id: uuid(),
   },
   {
-    translationKey: "companyName",
-    label: "Company Name",
-    name: "companyName",
+    translationKey: "lastName",
+    label: "Last Name",
+    name: "lastName",
     id: uuid(),
   },
   {

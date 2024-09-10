@@ -11,20 +11,20 @@ namespace backend.Models
        
     public long OrderItemId { get; set; }
 
-    public long OrderId { get; set; }  // Foreign key linking to the Order
+    public long OrderId { get; set; }
 
-    public long? ProductId { get; set; }  // Reference to the Product being ordered
+    public long? ProductId { get; set; }
 
-    public int Quantity { get; set; }  // Quantity of the product ordered
+    public int Quantity { get; set; } 
 
-    public double UnitPrice { get; set; }  // Price per unit at the time of the order
+    public double UnitPrice { get; set; }
 
-    public double TotalPrice { get; set; }  // Calculated as Quantity * UnitPrice
+    public double TotalPrice { get; set; }
 
-    public double? Discount { get; set; }  // Optional discount applied to this item
+    public double? Discount { get; set; }
 
 
-    public DateTime? DateCreated { get; set; }  // Timestamp for when the order item was created
+    public DateTime? DateCreated { get; set; }
 
     // Navigation property back to the Order
     [JsonIgnore]  public Order? Order { get; set; }

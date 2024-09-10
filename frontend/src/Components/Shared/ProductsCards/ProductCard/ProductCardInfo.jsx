@@ -6,54 +6,48 @@ import s from "./ProductCardInfo.module.scss";
 
 const ProductCardInfo = ({ product, showColors, navigateToProductDetails }) =>
 {
-    const { shortName, price, discount, afterDiscount, rate, votes, colors } = product;
-    const { t } = useTranslation();
+  const { shortName, price, discount, afterDiscount, rate, votes, colors } =
+    product;
+  const { t } = useTranslation();
 
-    const translatedProductName = translateProduct({
-        productName: shortName,
-        translateMethod: t,
-        translateKey: "shortName",
-    });
+  const translatedProductName = translateProduct({
+    productName: shortName,
+    translateMethod: t,
+    translateKey: "shortName",
+  });
 
-    // Ensure price is a number before using toFixed
-    const formattedPrice = parseFloat(price);
-    const formattedDiscountPrice = parseFloat(price - discount);
+  return (
+      <section className={s.productInfo}>
+          <strong className={s.productName}>
+              <a href="#" onClick={() => navigateToProductDetails()}>
+                  {shortName}
+              </a>
+          </strong>
 
-    return (
-        <section className={s.productInfo}>
-            <strong className={s.productName}>
-                <a href="#" onClick={() => navigateToProductDetails()}>
-                    {translatedProductName || shortName}
-                </a>
-            </strong>
+          <div className={s.price}>
+              {discount > 0 && discount < price ? (
+                  <>
+                      £{(price - discount).toFixed(2)}
+                      <del className={s.afterDiscount}>£{price.toFixed(2)}</del>
+                  </>
+              ) : (
+                  <>
+                      £{price.toFixed(2)}
+                  </>
+              )}
+          </div>
 
-            <div className={s.price}>
-                {discount > 0 && discount < price ? (
-                    <>
-                        £{!isNaN(formattedDiscountPrice) ? formattedDiscountPrice.toFixed(2) : "N/A"}
-                        <del className={s.afterDiscount}>
-                            £{!isNaN(formattedPrice) ? formattedPrice.toFixed(2) : "N/A"}
-                        </del>
-                    </>
-                ) : (
-                    <>
-                        £{!isNaN(formattedPrice) ? formattedPrice.toFixed(2) : "N/A"}
-                    </>
-                )}
-            </div>
+          <div className={s.rateContainer}>
+              <RateStars rate={rate}/>
+              <span className={s.numOfVotes}>({votes})</span>
+          </div>
 
-            <div className={s.rateContainer}>
-                <RateStars rate={rate} />
-                <span className={s.numOfVotes}>({votes})</span>
-            </div>
-
-            {showColors && (
-                <div className={s.colors}>
-                    <ProductColors colors={colors} />
-                </div>
-            )}
-        </section>
-    );
+          {showColors && (
+              <div className={s.colors}>
+                  <ProductColors colors={colors}/>
+              </div>
+          )}
+      </section>
+  );
 };
-
 export default ProductCardInfo;

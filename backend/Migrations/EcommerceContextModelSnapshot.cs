@@ -215,31 +215,17 @@ namespace backend.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("AddressLine1")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("City")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("PhoneNumber")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("PostCode")
+                    b.Property<string>("StreetAddress")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -257,8 +243,8 @@ namespace backend.Migrations
                     b.Property<int>("CustomerId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("CustomerId1")
-                        .HasColumnType("TEXT");
+                    b.Property<long?>("CustomerId1")
+                        .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("TEXT");
@@ -319,16 +305,14 @@ namespace backend.Migrations
 
             modelBuilder.Entity("backend.Models.Customer", b =>
                 {
-                    b.Property<string>("CustomerId")
-                        .HasColumnType("TEXT");
+                    b.Property<long>("CustomerId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
                     b.Property<int?>("AddressId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("DateOfBirth")
+                    b.Property<DateTime?>("DateOfBirth")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Email")
@@ -339,14 +323,7 @@ namespace backend.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime?>("LastLogin")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("PasswordHash")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -354,7 +331,6 @@ namespace backend.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("UserName")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("CustomerId");
@@ -404,9 +380,6 @@ namespace backend.Migrations
                     b.Property<long?>("CustomerId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("CustomerId1")
-                        .HasColumnType("TEXT");
-
                     b.Property<DateTime?>("DateCreated")
                         .HasColumnType("TEXT");
 
@@ -432,7 +405,7 @@ namespace backend.Migrations
 
                     b.HasIndex("BillingAddressId");
 
-                    b.HasIndex("CustomerId1");
+                    b.HasIndex("CustomerId");
 
                     b.HasIndex("OrderStatusId");
 
@@ -726,7 +699,7 @@ namespace backend.Migrations
 
                     b.HasOne("backend.Models.Customer", "Customer")
                         .WithMany("Orders")
-                        .HasForeignKey("CustomerId1");
+                        .HasForeignKey("CustomerId");
 
                     b.HasOne("backend.Models.OrderStatus", "OrderStatus")
                         .WithMany("Orders")

@@ -5,7 +5,8 @@ import s from './SignUpForm.module.scss';
 import axios from 'axios';
 import { apiUrl } from '../../../Data/BaseApi';
 
-const SignUpForm = () => {
+const SignUpForm = () =>
+{
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState('');
@@ -19,37 +20,45 @@ const SignUpForm = () => {
   const redirectUrl = decodeURIComponent(query.get("redirect")) || "/"; // Default to home page if no redirect URL
   console.log('SignUp redirect URL:', redirectUrl); // Debugging
 
-  const handleEmailChange = (value) => {
+  const handleEmailChange = (value) =>
+  {
     setEmail(value);
     setEmailError(validateEmail(value));
   };
 
-  const handlePasswordChange = (value) => {
+  const handlePasswordChange = (value) =>
+  {
     setPassword(value);
     setPasswordError(validatePassword(value));
   };
 
-  const validateEmail = (value) => {
-    if (!value) {
+  const validateEmail = (value) =>
+  {
+    if (!value)
+    {
       return 'Email is required';
     }
     return '';
   };
 
-  const validatePassword = (value) => {
-    if (!value) {
+  const validatePassword = (value) =>
+  {
+    if (!value)
+    {
       return 'Password is required';
     }
     return '';
   };
 
-  const signUp = async (e) => {
+  const signUp = async (e) =>
+  {
     e.preventDefault();
 
     const emailError = validateEmail(email);
     const passwordError = validatePassword(password);
 
-    if (!emailError && !passwordError) {
+    if (!emailError && !passwordError)
+    {
       const data = {
         Email: email,
         Password: password
@@ -57,15 +66,19 @@ const SignUpForm = () => {
 
       const url = `${apiUrl}account/register`;
 
-      try {
+      try
+      {
         await axios.post(url, data);
         console.log('SignUp successful, navigating to:', redirectUrl); // Debugging
         navigate(redirectUrl);
-      } catch (error) {
-        if (error.response && error.response.data) {
+      } catch (error)
+      {
+        if (error.response && error.response.data)
+        {
           const errorMessage = error.response.data[0]?.description || 'Registration failed.';
           alert(`Failed: ${errorMessage}`);
-        } else {
+        } else
+        {
           alert('Failed to register. Please try again.');
         }
       }

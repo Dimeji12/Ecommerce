@@ -6,6 +6,7 @@ import SectionTitle from "../../Shared/MiniComponents/SectionTitle/SectionTitle"
 import EventCounter from "./EventCounter";
 import s from "./TodaySection.module.scss";
 import { useState, useEffect } from 'react';
+import { apiUrl } from "../../../Data/BaseApi";
 
 const TodaySection = () =>
 {
@@ -22,7 +23,7 @@ const TodaySection = () =>
     {
       try
       {
-        const response = await fetch('http://localhost:5243/api/Products', {
+        const response = await fetch(`${apiUrl}Products`, {
           method: 'GET',
           credentials: 'include',
           headers: {

@@ -7,10 +7,10 @@ import s from "./CartInfoMenu.module.scss";
 
 const CartInfoMenu = () => {
   const { cartProducts } = useSelector((state) => state.products);
-  const subTotal = getSubTotal(cartProducts); //This caculates the subtotal 
+  const subTotal = getSubTotal(cartProducts);
   const { t } = useTranslation();
   const cartInfo = "cartPage.cartInfoMenu";
-  const navigateTo = useNavigate();//This is the react hook for navigating from one page to another
+  const navigateTo = useNavigate();
   const dispatch = useDispatch();
 
   return (
@@ -29,14 +29,13 @@ const CartInfoMenu = () => {
             {t(`${cartInfo}.free`)}
           </span>
         </div>
-{/*This is the display of the total and the subtotal on the cart page*/}
+
         <div className={s.item}>
           <span>{t(`${cartInfo}.total`)}:</span>
           <span aria-label={`Total ${subTotal}`}>£{subTotal}</span>
         </div>
       </div>
 
-{/*This is the button to proceed to the checkout page  */}
       <button
         type="button"
         onClick={() => handleCheckoutBtn(cartProducts, navigateTo, dispatch, t)}
@@ -50,14 +49,11 @@ export default CartInfoMenu;
 
 function handleCheckoutBtn(cartProducts, navigateTo, dispatch, t) {
   const isThereAnyCartItem = cartProducts.length > 0;
-//This is an if statement to navigate to the checkout page  and an else block to display an alert 
-//if the cart in the cart page is empty 
+
   if (isThereAnyCartItem) navigateTo("/checkout");
   else showEmptyCartAlert(dispatch, t);
 }
 
-// This the function that  displays the alert for empty cart and is called above in the handlecheckout
-// button else block 
 function showEmptyCartAlert(dispatch, t) {
   const alertText = t("toastAlert.cartEmpty");
   const alertState = "warning";

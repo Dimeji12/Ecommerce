@@ -11,7 +11,7 @@ import PagesHistory from '../Shared/MiniComponents/PagesHistory/PagesHistory';
 import SkeletonCards from '../Shared/SkeletonLoaders/ProductCard/SkeletonCards';
 import s from './ProductsPage.module.scss';
 import { useState, useEffect } from 'react';
-import { apiUrl } from "../../Data/BaseApi.js";
+import {apiUrl} from "../../Data/BaseApi.js";
 
 //TODO: Note that all products are loaded here
 const ProductsPage = () =>
@@ -23,7 +23,7 @@ const ProductsPage = () =>
     {
       try
       {
-        const response = await fetch("https://backend20240903110238.azurewebsites.net/api/Products", {
+        const response = await fetch(`${apiUrl}Products`, {
           method: 'GET',
           credentials: 'include',
           headers: {

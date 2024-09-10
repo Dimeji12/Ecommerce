@@ -2,38 +2,35 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace backend.Models
 {
     public class Customer
     {
-    public string CustomerId { get; set; }
-    public string UserName { get; set; }  // Username chosen by the user
+    public long CustomerId { get; set; }
+    
+    public string? UserName { get; set; }
 
-    public string Email { get; set; }  // User's email address
+    public string Email { get; set; }
 
-    public string PasswordHash { get; set; }  // Hashed password for security
+    public string FirstName { get; set; }
 
-    public string FirstName { get; set; }  // User's first name
+    public string LastName { get; set; }
 
-    public string LastName { get; set; }  // User's last name
+    public DateTime? DateOfBirth { get; set; }
 
-    public DateTime DateOfBirth { get; set; }  // User's date of birth
+    public string? PhoneNumber { get; set; }
 
-    public DateTime DateCreated { get; set; }  // Timestamp for when the account was created
+    public int? AddressId { get; set; }
 
-    public DateTime? LastLogin { get; set; }  // Timestamp for the last time the user logged in
+    public Address? Address { get; set; }
 
-    public string? PhoneNumber { get; set; }  // Optional phone number
+    [JsonIgnore]
+    public ICollection<Order> Orders { get; set; }
 
-    public int? AddressId { get; set; }  // Reference to the user's default address
-
-    public Address? Address { get; set; }  // Navigation property to the user's address
-
-    // Navigation properties for related entities
-    public ICollection<Order> Orders { get; set; }  // Collection of orders placed by the user
-
-    public ICollection<Cart> Carts { get; set; }  // Collection of shopping carts associated with the user
+    [JsonIgnore]
+    public ICollection<Cart> Carts { get; set; }
 
     public Customer()
     {

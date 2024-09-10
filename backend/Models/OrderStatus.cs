@@ -7,13 +7,13 @@ namespace backend.Models
 {
     public class OrderStatus
     {
-           public long Id { get; set; }  // Unique identifier for the order status
+           public long Id { get; set; }  
 
-    public string StatusName { get; set; }  // Name of the status (e.g., "Pending", "Shipped")
+    public string StatusName { get; set; }  
 
-    public string? Description { get; set; }  // Optional description of the status
+    public string? Description { get; set; } 
 
-    public ICollection<Order> Orders { get; set; }  // Collection of orders associated with this status
+    public ICollection<Order> Orders { get; set; }  
 
     public OrderStatus()
     {
